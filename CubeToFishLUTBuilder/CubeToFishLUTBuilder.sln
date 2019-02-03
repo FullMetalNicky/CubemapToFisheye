@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CubeToFishLUTBuilder", "CubeToFishLUTBuilder\CubeToFishLUTBuilder.vcxproj", "{73C6E109-339D-4D73-8ECE-FB209E839772}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73C6E109-339D-4D73-8ECE-FB209E839772}.Debug|x64.ActiveCfg = Debug|x64
+		{73C6E109-339D-4D73-8ECE-FB209E839772}.Debug|x64.Build.0 = Debug|x64
+		{73C6E109-339D-4D73-8ECE-FB209E839772}.Release|x64.ActiveCfg = Release|x64
+		{73C6E109-339D-4D73-8ECE-FB209E839772}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B0F97A6F-BA93-43FF-B37A-9E54ED1F433F}
+	EndGlobalSection
+EndGlobal
