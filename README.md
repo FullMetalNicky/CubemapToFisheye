@@ -12,7 +12,7 @@ Instead of using the ideal model
                         
 OpenCV suggests a more realistic approach by modelling the angel as a series:
 
-                        θd=θ * (1 + k1 * θ2 + k2 * θ4 + k3 * θ6 + k4 * θ8)
+                        θd = θ * (1 + k1 * θ2 + k2 * θ4 + k3 * θ6 + k4 * θ8)
                         r = f * θd
                         
 Where (k1, k2, k3, k4) are the fisheye's distortion coefficients. 
