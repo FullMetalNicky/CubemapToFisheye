@@ -57,56 +57,15 @@ public class CubemapToFisheye : MonoBehaviour
     }
 
 
-    private ComputeBuffer binaryFileToComputeBuffer(int index)
+    private ComputeBuffer binaryFileToComputeBuffer()
     {
         byte[] buffer = new byte[1];
         int count = 0;
-        int stride = 0;
+        int stride = 0;     
+       
+        string mapName = LUTFolderPath + "/GPUmap.bin";
 
-        if (0 == index || 1 ==index ) //maps
-        {
-            List<byte[]> bufferArray = new List<byte[]>();
-
-            if (0 == index) //xMap
-            {
-                for (int i = 0; i < 5; ++i)
-                {
-                    //  string mapXName = LUTFolderPath + "/lut_type_4_cam_" + cameraNumber.ToString() + "_mapX" + i.ToString() + ".bin";
-                    string mapXName = LUTFolderPath + "/lut_type_4_cam_0_mapX" + i.ToString() + ".bin";
-                    bufferArray.Add(binaryFileToBinaryArray(mapXName, ref stride, ref count));
-                }
-            }
-            else if (1 == index) //yMap
-            {
-                for (int i = 0; i < 5; ++i)
-                {
-                    //string mapYName = LUTFolderPath + "/lut_type_4_cam_" + cameraNumber.ToString() + "_mapY" + i.ToString() + ".bin";
-                    string mapYName = LUTFolderPath + "/lut_type_4_cam_0_mapY" + i.ToString() + ".bin";
-
-                    bufferArray.Add(binaryFileToBinaryArray(mapYName, ref stride, ref count));
-                }
-            }
-            buffer = new byte[bufferArray[0].Length * 5];
-            for (int i = 0; i < 5; ++i)
-            {
-                System.Buffer.BlockCopy(bufferArray[i], 0, buffer, i * bufferArray[i].Length, bufferArray[i].Length);
-            }
-            count *= 6;
-        }        
-        else if(2 == index) //lut
-        {
-          //  string lutName = LUTFolderPath + "/lut_type_4_cam_" + cameraNumber.ToString() + "LUT.bin";
-            string lutName = LUTFolderPath + "/lut_type_4_cam_0LUT.bin";
-
-            buffer = binaryFileToBinaryArray(lutName, ref stride, ref count);          
-        }
-        else if (3 == index) //GPUmap
-        {
-            //  string lutName = LUTFolderPath + "/lut_type_4_cam_" + cameraNumber.ToString() + "LUT.bin";
-            string mapName = LUTFolderPath + "/GPUmap.bin";
-
-            buffer = binaryFileToBinaryArray(mapName, ref stride, ref count);
-        }
+        buffer = binaryFileToBinaryArray(mapName, ref stride, ref count);        
 
         ComputeBuffer cb = new ComputeBuffer(count, stride);    
         cb.SetData(buffer);
@@ -177,7 +136,7 @@ public class CubemapToFisheye : MonoBehaviour
             DirectoryInfo di = Directory.CreateDirectory(destinationFolderPath);
         }
        
-        mapBuffer = binaryFileToComputeBuffer(3);
+        mapBuffer = binaryFileToComputeBuffer();
 
         shader = Instantiate(Resources.Load("CubemapToFisheye")) as ComputeShader;
         kernelIndex = shader.FindKernel("CSMain");

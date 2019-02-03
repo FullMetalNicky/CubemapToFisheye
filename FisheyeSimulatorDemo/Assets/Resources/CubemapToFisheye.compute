@@ -1,0 +1,50 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+CGPROGRAM
+
+RWTexture2D<float4> Result;
+StructuredBuffer<float> mapBuffer;
+Texture2D<float4> Front;
+Texture2D<float4> Right;
+Texture2D<float4> Left;
+Texture2D<float4> Top;
+Texture2D<float4> Bottom;
+SamplerState samplerFront;
+int columns;
+int rows;
+int cubemapSize;
+
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	int faceIndex = mapBuffer[3 * (columns * id.y + id.x) + 2];
+	float u = mapBuffer[3 * (columns * id.y + id.x)];
+	float v = mapBuffer[3 * (columns * id.y + id.x) + 1];
+	float2 uv = float2(u / cubemapSize, 1.0 - v / cubemapSize);
+	float2 xy = float2(id.x, rows - id.y);
+
+	if (4 == faceIndex)
+	{
+		Result[xy] = Front.SampleLevel(samplerFront, uv, 0);
+	}
+	else if (0 == faceIndex)
+	{
+		Result[xy] = Right.SampleLevel(samplerFront, uv, 0);
+	}
+	else if (1 == faceIndex)
+	{
+		Result[xy] = Left.SampleLevel(samplerFront, uv, 0);
+	}
+	else if (2 == faceIndex)
+	{
+		Result[xy] = Top.SampleLevel(samplerFront, uv, 0);
+	}
+	else if (3 == faceIndex)
+	{
+		Result[xy] = Bottom.SampleLevel(samplerFront, uv, 0);
+	}
+}
+
+ENDCG
+
