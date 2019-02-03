@@ -27,7 +27,7 @@ Where (k1, k2, k3, k4) are the fisheye's distortion coefficients.
 
 
 ## Planned Features
-- chromatic aberration
+- Chromatic aberration
 - Optimizations
 
 ## License
