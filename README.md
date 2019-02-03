@@ -1,5 +1,5 @@
 # CubemapToFisheye
-Working with Unity, I was in dire need of an accurate, and near real-time simulation of fisheye . Since a lot of computer vision projects use OpenCV to calibrate their cameras, I decided to use OpenCV's fisheye distortion model. Despite it's many flaws, this model is very popular so it seemed like a good choice to implement this effect accordingly. To simulate the fisheye effect as efficiently as possible, first I build a look-up table (LUT) using a C++ code, and then I use it in a compute shader in Unity.
+Working with Unity, I was in dire need of an accurate, and near real-time simulation of fisheye . Since a lot of computer vision projects use OpenCV to calibrate their cameras, I decided to use OpenCV's fisheye distortion model. Despite its many flaws, this model is very popular so it seemed like a good choice to implement this effect accordingly. To simulate the fisheye effect as efficiently as possible, first I build a look-up table (LUT) using a C++ code, and then I use it in a compute shader in Unity.
 
 [![](http://img.youtube.com/vi/3-XyOb4pdns/0.jpg)](http://www.youtube.com/watch?v=3-XyOb4pdns "FisheyeSimulatorDem")
 
