@@ -27,7 +27,7 @@ Cubemaps are like social media. You think there is a whole world around you, but
 Unity offers a class that renders cubemaps for you, and it's probably more efficient than the one I wrote, but it's limited to cubemaps that are aligned with the Cartesian axes. So if you want to model a tilted camera, you're fucked. 
 
 ## Building LUTs in C++
-Currently, I don't have a CMake. So you can use my .sln/.vcxproj files in VS2017, or take the source files and create a new porject in whatever IDE. Just make sure you link it with OpenCV. 
+Currently, I don't have a CMake. So you can use my .sln/.vcxproj files in VS2017, or take the source files and create a new project in whatever IDE. Just make sure you link it with OpenCV. 
 
 In orer to create a LUT, you will need to provide LUT builder with an intrisic matrix (k) in a CV_64F format (double), a vector of 4 doubles for the distortionn coeeficients (cv::Vec4d), the resolution of the lens that matches these calibration paramaters and the resolution of the cubemap faces. Cubemap face resolution must be a square and a power of 2.
 LUTs can be saved to a folder as binary files, and also be read from binary files. 
