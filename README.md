@@ -1,7 +1,7 @@
 # CubemapToFisheye
 Working with Unity, I was in dire need of an accurate, and near real-time simulation of fisheye . Since a lot of computer vision projects use OpenCV to calibrate their cameras, I decided to use OpenCV's fisheye distortion model. Despite its many flaws, this model is very popular so it seemed like a good choice to implement this effect accordingly. To simulate the fisheye effect as efficiently as possible, first I build a look-up table (LUT) using a C++ code, and then I use it in a compute shader in Unity.
 
-[![](http://img.youtube.com/vi/3-XyOb4pdns/0.jpg)](http://www.youtube.com/watch?v=3-XyOb4pdns "FisheyeSimulatorDem")
+[![](http://img.youtube.com/vi/3-XyOb4pdns/0.jpg)](http://www.youtube.com/watch?v=3-XyOb4pdns "FisheyeSimulatorDemo")
 
 ## OpenCV Fisheye Distortion Model
 As you probably know, in a fisheye lens straight lines appear curved. Just like getting drunk, where there are many ways in which you go from a functioning human being to a pitiful, drooling mess curled on the floor, it works similarily with straight lines and fisheyes. The model in which OpenCV transforms lines is an equidistant fisheye projection, with perturbations. 
@@ -37,7 +37,12 @@ I'm going to upload a demo application in Unity so you can see how to use my awe
 Basically, there are two important files that you can tweak to suit your needs. CubemapToFisheye.cs that you attach as a script to your unity camera model, and the compute shader, CubemapToFisheye.compute.
 
 ### Operating Modes
-Currently, there are two operating modes, capturing and calibration. Both automatically generate a fisheye every x frames, but capturing mode buffers all the generate fisheyes to be saved to file when the application is closed, while calibration mode will buffer only the few latest fisheyes, and will save to file only when you press enter.
+Currently, there are two operating modes, capturing and calibration. Both automatically generate a fisheye every x frames, but capturing mode buffers all the generate fisheyes to be saved to file when the application is closed, while calibration mode will buffer only the few latest fisheyes, and will save to file only when you press "enter".
+
+You can find in the source code a calibration scene, with controllable checkerboard, that allows you to take calibration images of the simulated fisheye created with the LUT. When the board is positioned to you liking, press "enter" and the image will be saved to the destination folder. Once you have taken a few dozen images, you can run the OpenCV calibration methods for fisheye lense and verify your model. I might upload an example code soon if I'm not too lazy.
+
+[![](http://img.youtube.com/vi/rOP5NLxpJyI/0.jpg)](http://www.youtube.com/watch?v=rOP5NLxpJyI "CalibrationApp for FisheyeSimulatorDemo")
+
 
 ### CubemapToFisheye script
 The script renders cubemaps, generates fisheye images and saves them to a destination folder when you close the program (so I/O won't slow the application while running), or saves selected images, depending on the mode. You must add another dummy camera to actually see where you're going - I'm rendering the original camera to texture, and then sending the simulated fisheye images to another camera.  
