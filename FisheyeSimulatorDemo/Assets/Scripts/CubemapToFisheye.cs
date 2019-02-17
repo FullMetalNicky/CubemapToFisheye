@@ -27,6 +27,7 @@ public class CubemapToFisheye : MonoBehaviour
     int rowsForShader;
     int columnsForShader;
     List<RenderTexture> fisheyeTextures;
+    bool saveCalibImage = false;
 
     int counter = 0;
     int fpsCounter = 0;
@@ -110,7 +111,11 @@ public class CubemapToFisheye : MonoBehaviour
         if (0 != fisheyeTextures.Count)
         {
             screenCam.targetTexture = null;
-            RenderTexture.active = null;           
+            RenderTexture.active = null;  
+            if(calibrationMode && fisheyeTextures.Count > 50)
+            {
+                fisheyeTextures.RemoveRange(0 , 40);
+            }
         }
     }
 
@@ -119,7 +124,7 @@ public class CubemapToFisheye : MonoBehaviour
     {
       
         fisheyeTextures = new List<RenderTexture>();     
-
+ 
         cubemapCamera = new GameObject("CubemapCamera", typeof(Camera));
     
         if (0 == destinationFolderPath.Length)
@@ -182,10 +187,25 @@ public class CubemapToFisheye : MonoBehaviour
             shader.SetTexture(kernelIndex, Shader.PropertyToID(facesString[i]), renderTexture);
         }
         shader.Dispatch(kernelIndex, columnsForShader / 8, rowsForShader / 8, 1);
-        fisheyeTextures.Add(fisheyeOutput);  
+        fisheyeTextures.Add(fisheyeOutput);
+        if (calibrationMode && saveCalibImage)
+        {
+            WriteToFile(fisheyeOutput);
+            saveCalibImage = false;
+        }
     }
 
-    
+    void WriteToFile(RenderTexture fisheyeImage)
+    {
+        Texture2D save = new Texture2D(columnsForShader, rowsForShader, TextureFormat.RGB24, false);
+        save.wrapMode = TextureWrapMode.Clamp;
+        RenderTexture.active = fisheyeImage;
+        save.ReadPixels(new Rect(0, 0, fisheyeImage.width, fisheyeImage.height), 0, 0);
+        string filePath = destinationFolderPath + "/" + counter.ToString() + ".png";
+        SaveTextureToFile(save, filePath);
+        ++counter;
+    }
+
     // Update is called once per frame
     void Update ()
     {
@@ -193,17 +213,15 @@ public class CubemapToFisheye : MonoBehaviour
         {
             if (Input.GetKeyDown("enter") || Input.GetKeyDown("return"))
             {
-                StartCoroutine(CreateCubeMap());
-            }
-        }
-        else
+                saveCalibImage = true;
+            }            
+        }   
+      
+        ++fpsCounter;
+        if (0 == fpsCounter % 5)
         {
-            ++fpsCounter;
-            if (0 == fpsCounter % 5)
-            {
-                StartCoroutine(CreateCubeMap());
-            }
-        }
+            StartCoroutine(CreateCubeMap());
+        }       
     }
 
     private void OnDestroy()
@@ -211,13 +229,17 @@ public class CubemapToFisheye : MonoBehaviour
         mapBuffer.Dispose();
         Texture2D save = new Texture2D(columnsForShader, rowsForShader, TextureFormat.RGB24, false);
         save.wrapMode = TextureWrapMode.Clamp;
-        foreach (var rt in fisheyeTextures)
-        {           
-            RenderTexture.active = rt;
-            save.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
-            string filePath = destinationFolderPath + "/" + counter.ToString()+ ".png";
-            SaveTextureToFile(save, filePath);
-            ++counter;
+        
+        if (!calibrationMode)
+        {
+            foreach (var rt in fisheyeTextures)
+            {
+                RenderTexture.active = rt;
+                save.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+                string filePath = destinationFolderPath + "/" + counter.ToString() + ".png";
+                SaveTextureToFile(save, filePath);
+                ++counter;
+            }
         }
     }
 }
